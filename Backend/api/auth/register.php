@@ -30,8 +30,8 @@ if(
     $utilisateur->nom = $data->nom;
     $utilisateur->email = $data->email;
     
-    // Le mot de passe sera haché dans la méthode inscription() du modèle
-    $utilisateur->mot_de_passe = $data->mot_de_passe;
+    // Hacher le mot de passe avant de l'attribuer
+    $utilisateur->mot_de_passe = password_hash($data->mot_de_passe, PASSWORD_BCRYPT);
 
     // Vérification de l'existence de l'email
     if($utilisateur->emailExiste()) {

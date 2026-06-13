@@ -12,6 +12,7 @@ class Plat {
     public $nom;
     public $description;
     public $prix;
+    public $photo;
     public $disponible;
 
     public function __construct($db) {
@@ -23,7 +24,7 @@ class Plat {
      * @return PDOStatement
      */
     public function getByCategorie() {
-        $query = "SELECT id_plat, id_categorie, nom, description, prix, disponible 
+        $query = "SELECT id_plat, id_categorie, nom, description, prix, photo, disponible 
                   FROM " . $this->table_name . " 
                   WHERE id_categorie = :id_categorie AND disponible = 1 
                   ORDER BY nom ASC";
@@ -44,7 +45,7 @@ class Plat {
      * @return PDOStatement
      */
     public function getByRestaurant($id_restaurant) {
-        $query = "SELECT p.id_plat, p.id_categorie, p.nom, p.description, p.prix, p.disponible, c.nom as categorie_nom 
+        $query = "SELECT p.id_plat, p.id_categorie, p.nom, p.description, p.prix, p.photo, p.disponible, c.nom as categorie_nom 
                   FROM " . $this->table_name . " p
                   LEFT JOIN categories_menu c ON p.id_categorie = c.id_categorie
                   WHERE c.id_restaurant = :id_restaurant AND p.disponible = 1

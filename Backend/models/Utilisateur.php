@@ -12,6 +12,9 @@ class Utilisateur {
     public $nom;
     public $email;
     public $mot_de_passe;
+    public $role;
+    public $telephone;
+    public $adresse_livraison;
     public $date_inscription;
 
     /**
@@ -56,7 +59,7 @@ class Utilisateur {
      */
     public function emailExiste() {
         // Requête pour vérifier l'email
-        $query = "SELECT id_utilisateur, nom, mot_de_passe 
+        $query = "SELECT id_utilisateur, nom, mot_de_passe, role 
                   FROM " . $this->table_name . " 
                   WHERE email = ? 
                   LIMIT 0,1";
@@ -73,6 +76,7 @@ class Utilisateur {
             $this->id_utilisateur = $row['id_utilisateur'];
             $this->nom = $row['nom'];
             $this->mot_de_passe = $row['mot_de_passe']; // Le hash stocké en base
+            $this->role = $row['role'];
             return true;
         }
         return false;
@@ -83,7 +87,7 @@ class Utilisateur {
      * @return array|boolean Les données de l'utilisateur ou false
      */
     public function getProfil() {
-        $query = "SELECT id_utilisateur, nom, email, date_inscription 
+        $query = "SELECT id_utilisateur, nom, email, telephone, adresse_livraison, role, created_at AS date_inscription 
                   FROM " . $this->table_name . " 
                   WHERE id_utilisateur = ? 
                   LIMIT 0,1";

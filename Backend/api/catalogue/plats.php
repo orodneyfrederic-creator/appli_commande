@@ -40,6 +40,7 @@ if($num > 0) {
             "nom" => html_entity_decode($nom),
             "description" => html_entity_decode($description),
             "prix" => $prix,
+            "photo" => isset($photo) ? html_entity_decode($photo) : null,
             "disponible" => $disponible
         ];
         

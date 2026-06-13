@@ -36,7 +36,8 @@ if(!empty($data->email) && !empty($data->mot_de_passe)) {
             "utilisateur" => [
                 "id_utilisateur" => $utilisateur->id_utilisateur,
                 "nom" => $utilisateur->nom,
-                "email" => $utilisateur->email
+                "email" => $utilisateur->email,
+                "role" => $utilisateur->role
             ]
         ]);
     } else {

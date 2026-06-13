@@ -13,6 +13,9 @@ class Commande {
     public $id_restaurant;
     public $montant_total;
     public $statut;
+    public $type_livraison;
+    public $adresse_livraison;
+    public $notes;
     
     // Pour la création de la commande
     public $lignes_panier = []; // Tableau associatif contenant id_plat, quantite, prix_unitaire
@@ -33,7 +36,7 @@ class Commande {
 
             // 1. Insertion de la commande principale
             $query_cmd = "INSERT INTO " . $this->table_commande . " 
-                          SET id_utilisateur=:id_utilisateur, id_restaurant=:id_restaurant, montant_total=:montant_total, statut=:statut, date_commande=NOW()";
+                          SET id_utilisateur=:id_utilisateur, id_restaurant=:id_restaurant, montant_total=:montant_total, statut=:statut, type_livraison=:type_livraison, adresse_livraison=:adresse_livraison, notes=:notes, date_commande=NOW()";
             
             $stmt_cmd = $this->conn->prepare($query_cmd);
 
@@ -42,11 +45,17 @@ class Commande {
             $this->id_restaurant = htmlspecialchars(strip_tags($this->id_restaurant));
             $this->montant_total = htmlspecialchars(strip_tags($this->montant_total));
             $this->statut = htmlspecialchars(strip_tags($this->statut)); // ex: 'en_attente'
+            $this->type_livraison = htmlspecialchars(strip_tags($this->type_livraison));
+            $this->adresse_livraison = $this->adresse_livraison !== null ? htmlspecialchars(strip_tags($this->adresse_livraison)) : null;
+            $this->notes = $this->notes !== null ? htmlspecialchars(strip_tags($this->notes)) : null;
 
             $stmt_cmd->bindParam(":id_utilisateur", $this->id_utilisateur);
             $stmt_cmd->bindParam(":id_restaurant", $this->id_restaurant);
             $stmt_cmd->bindParam(":montant_total", $this->montant_total);
             $stmt_cmd->bindParam(":statut", $this->statut);
+            $stmt_cmd->bindParam(":type_livraison", $this->type_livraison);
+            $stmt_cmd->bindParam(":adresse_livraison", $this->adresse_livraison);
+            $stmt_cmd->bindParam(":notes", $this->notes);
 
             $stmt_cmd->execute();
             
@@ -88,7 +97,7 @@ class Commande {
      * @return PDOStatement
      */
     public function getHistoriqueUtilisateur() {
-        $query = "SELECT c.id_commande, c.id_restaurant, c.montant_total, c.statut, c.date_commande, r.nom as restaurant_nom
+        $query = "SELECT c.id_commande, c.id_restaurant, c.montant_total, c.statut, c.date_commande, c.type_livraison, c.adresse_livraison, c.notes, r.nom as restaurant_nom
                   FROM " . $this->table_commande . " c
                   LEFT JOIN restaurants r ON c.id_restaurant = r.id_restaurant
                   WHERE c.id_utilisateur = :id_utilisateur 

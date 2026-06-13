@@ -29,6 +29,9 @@ if(
     $commande->id_restaurant = $data['id_restaurant'];
     $commande->montant_total = $data['montant_total'];
     $commande->statut = "en_attente"; // Statut initial par défaut
+    $commande->type_livraison = isset($data['type_livraison']) ? $data['type_livraison'] : 'livraison';
+    $commande->adresse_livraison = isset($data['adresse_livraison']) ? $data['adresse_livraison'] : null;
+    $commande->notes = isset($data['notes']) ? $data['notes'] : null;
     
     // Le tableau des plats commandés
     $commande->lignes_panier = $data['lignes_panier'];
